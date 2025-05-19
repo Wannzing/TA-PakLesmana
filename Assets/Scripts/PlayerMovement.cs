@@ -18,10 +18,16 @@ public class PlayerMovement : MonoBehaviour
     [Header("UI")]
     public GameObject endScreen;
 
+    [Header("Particle")]
+
+    public GameObject particleEffect;
+    public Transform particleTransform;
+
     private float fallThreshold = 20f;
     private float highestY;
     private CharacterController controller;
     private Vector3 velocity;
+    
 
 
 
@@ -61,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            Instantiate(particleEffect, particleTransform.position, particleTransform.rotation * Quaternion.Euler(-90, 0, 0));
         }
     }
 
@@ -80,6 +87,7 @@ public class PlayerMovement : MonoBehaviour
         if (transform.position.y < highestY - fallThreshold)
         {
             endScreen.SetActive(true);
+            Time.timeScale = 0f;
         }
     }
 }

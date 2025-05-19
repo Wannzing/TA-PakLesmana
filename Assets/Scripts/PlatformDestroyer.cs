@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class PlatformDestroyer : MonoBehaviour
 {
-    public float lifeTime = 5f; 
+    public float lifeTime = 5f;
+    public GameObject explosionEffect;
 
     void Start()
     {
@@ -13,6 +15,9 @@ public class PlatformDestroyer : MonoBehaviour
 
     void OnDestroy()
     {
-
+        if (explosionEffect != null)
+        {
+            Instantiate(explosionEffect, transform.position, transform.rotation);
+        }
     }
 }
