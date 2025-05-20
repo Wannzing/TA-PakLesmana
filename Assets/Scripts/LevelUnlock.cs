@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class LevelUnlock : MonoBehaviour
 {
+
+    public GameObject unlockNotificationUI;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -31,6 +33,22 @@ public class LevelUnlock : MonoBehaviour
 
             PlayerPrefs.Save();
             Debug.Log("New Stage Unlocked! Now unlocked up to level: " + newIndex);
+
+            if (unlockNotificationUI != null)
+            {
+                StartCoroutine(ShowUnlockNotification());
+            }
         }
     }
+
+    IEnumerator ShowUnlockNotification()
+    {
+        AudioManager.Instance.PlaySFX("Notification");
+        unlockNotificationUI.SetActive(true);
+
+        
+        yield return new WaitForSeconds(2.5f); 
+        unlockNotificationUI.SetActive(false);
+    }
+
 }
