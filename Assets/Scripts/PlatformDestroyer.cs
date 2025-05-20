@@ -17,6 +17,7 @@ public class PlatformDestroyer : MonoBehaviour
     {
         if (explosionEffect != null)
         {
+            AudioManager.Instance.PlaySFX("PlatformBreak");
             Instantiate(explosionEffect, transform.position, transform.rotation);
         }
     }

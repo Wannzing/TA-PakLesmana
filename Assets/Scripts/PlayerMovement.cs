@@ -27,12 +27,14 @@ public class PlayerMovement : MonoBehaviour
     private float highestY;
     private CharacterController controller;
     private Vector3 velocity;
-    
 
+    private bool hasGameOverPlayed = false;
 
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        hasGameOverPlayed = false;
         controller = GetComponent<CharacterController>();
         endScreen.SetActive(false);
         highestY = transform.position.y;
@@ -68,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             Instantiate(particleEffect, particleTransform.position, particleTransform.rotation * Quaternion.Euler(-90, 0, 0));
+            AudioManager.Instance.PlaySFX("Jump");
         }
     }
 
@@ -84,9 +87,14 @@ public class PlayerMovement : MonoBehaviour
             highestY = transform.position.y;
         }
 
-        if (transform.position.y < highestY - fallThreshold)
+        if (!hasGameOverPlayed && transform.position.y < highestY - fallThreshold)
         {
+            Cursor.lockState = CursorLockMode.Confined;
+            AudioManager.Instance.musicSource.Stop();
+            AudioManager.Instance.sfxSource.Stop();
+            AudioManager.Instance.PlaySFX("GameOver");
             endScreen.SetActive(true);
+            hasGameOverPlayed = true;
             Time.timeScale = 0f;
         }
     }
